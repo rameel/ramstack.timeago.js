@@ -1,0 +1,46 @@
+{
+  "name": "@ramstack/timeago.js",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "author": "rameel <rameel-b@hotmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rameel/ramstack.timeago.js.git"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/timeago.d.ts",
+        "default": "./dist/timeago.esm.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "prebuild": "npm run clean",
+    "clean": "rimraf dist",
+    "size-report": "node scripts/compare-package-sizes.js"
+  },
+  "keywords": [
+    "timeago"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "rimraf": "^6.1.2",
+    "rollup": "^4.55.1",
+    "rollup-plugin-bundle-size": "^1.0.3",
+    "strip-comments": "^2.0.1",
+    "terser": "^5.44.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
+  }
+}

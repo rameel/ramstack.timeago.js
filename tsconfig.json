@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "strict": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "declarationDir": "./dist/types"
+  },
+  "files": [
+    "src/timeago.ts"
+  ]
+}
