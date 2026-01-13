@@ -1,13 +1,69 @@
+/**
+ * Provides options for configuring the `timeago` behavior.
+ */
 interface TimeagoOptions {
-    locale?: string | null;
+    /**
+     * Language/locale code for relative time formatting.
+     *
+     * @example
+     * ```ts
+     * timeago('.timeago', { locale: 'es' });
+     * ```
+     *
+     * @default undefined (falls back to browser's default locale)
+     */
+    locale?: string;
 }
 
+/**
+ * @internal
+ * Internal metadata stored for each tracked time element.
+ */
 interface TimeagoMetadata {
+    /**
+     * The reference date/time that this element represents.
+     */
     date: Date;
+
+    /**
+     * The unit that was last used for formatting.
+     */
     unit: Intl.RelativeTimeFormatUnit;
+
+    /**
+     * Timestamp (in seconds since epoch) when the next update should happen.
+     * After this moment the element should be re-formatted.
+     */
     next: number;
 }
 
+/**
+ * Creates live-updating relative time labels (like "3 minutes ago", "in 2 hours", etc.)
+ *
+ * Automatically tracks elements with `datetime` attribute or `data-datetime` attribute,
+ * updates them periodically using efficient smart intervals,
+ * and reacts to DOM changes via `MutationObserver`.
+ *
+ * @remarks
+ * - This function mutates the `textContent` of matched elements.
+ * - Elements must contain a valid date value in `datetime` or `data-datetime` attribute.
+ *
+ * @example
+ * ```ts
+ * // Basic usage - will look for elements with datetime attribute
+ * const cleanup = timeago('[datetime]');
+ *
+ * // With custom locale
+ * const cleanup = timeago('.timeago', { locale: 'es' });
+ *
+ * // Later when you need to stop updates
+ * cleanup();
+ * ```
+ *
+ * @param selector  - CSS selector to find elements that should display relative time.
+ * @param options   - Configuration options.
+ * @returns A cleanup function that stops all updates and disconnects the observer.
+ */
 export function timeago(selector: string, options?: TimeagoOptions): () => void {
     const cache = new Map<HTMLElement, TimeagoMetadata>();
     const formatter = new Intl.RelativeTimeFormat(options?.locale || "", { numeric: "auto" });
