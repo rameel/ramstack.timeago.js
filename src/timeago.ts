@@ -17,7 +17,7 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
     function process_tree(el: HTMLElement): boolean {
         let handled = try_track(el);
         for (let c of query_all(el)) {
-            c instanceof HTMLElement && (handled = try_track(c) || handled);
+            is_html_element(c) && (handled = try_track(c) || handled);
         }
 
         return handled;
@@ -47,6 +47,10 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
 
     function query_all(el: HTMLElement) {
         return el.querySelectorAll(selector);
+    }
+
+    function is_html_element(el: Node): el is HTMLElement {
+        return el instanceof HTMLElement;
     }
 
     function execute_task(timeout: number = 0) {
@@ -79,11 +83,11 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
 
         for (let r of records) {
             for (let n of r.addedNodes) {
-                n instanceof HTMLElement && (handled = process_tree(n) || handled);
+                is_html_element(n) && (handled = process_tree(n) || handled);
             }
 
             for (let n of r.removedNodes) {
-                if (n instanceof HTMLElement) {
+                if (is_html_element(n)) {
                     for (let e of query_all(n)) {
                         handled = untrack(e as HTMLElement) || handled;
                     }
@@ -91,7 +95,7 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
             }
 
             if (r.type === "attributes") {
-                if (r.target instanceof HTMLElement) {
+                if (is_html_element(r.target)) {
                     handled = cache.delete(r.target) || handled;
                     handled = try_track(r.target) || handled;
                 }
