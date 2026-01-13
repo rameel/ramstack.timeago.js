@@ -12,8 +12,6 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
     const cache = new Map<HTMLElement, TimeagoMetadata>();
     const formatter = new Intl.RelativeTimeFormat(options?.locale || "", { numeric: "auto" });
 
-    let task_id: number | undefined;
-
     const query_all = (el: HTMLElement) => el.querySelectorAll(selector);
     const is_html_element = (el: Node): el is HTMLElement => el instanceof HTMLElement;
 
@@ -47,6 +45,8 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
 
         return handled;
     }
+
+    let task_id: number | undefined;
 
     const execute_task = (timeout: number = 0) => {
         clearInterval(task_id);
