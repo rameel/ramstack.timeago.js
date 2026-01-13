@@ -14,16 +14,10 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
 
     let task_id: number | undefined;
 
-    function process_tree(el: HTMLElement): boolean {
-        let handled = try_track(el);
-        for (let c of query_all(el)) {
-            is_html_element(c) && (handled = try_track(c) || handled);
-        }
+    const query_all = (el: HTMLElement) => el.querySelectorAll(selector);
+    const is_html_element = (el: Node): el is HTMLElement => el instanceof HTMLElement;
 
-        return handled;
-    }
-
-    function try_track(el: HTMLElement): boolean {
+    const try_track = (el: HTMLElement): boolean => {
         if (el.matches(selector) && !cache.has(el)) {
             let date = extract_date_value(el);
             if (date) {
@@ -35,7 +29,7 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
         return false;
     }
 
-    function untrack(el: HTMLElement): boolean {
+    const untrack = (el: HTMLElement): boolean => {
         let handled = cache.delete(el);
 
         for (let c of query_all(el)) {
@@ -45,15 +39,16 @@ export function timeago(selector: string, options?: TimeagoOptions): () => void 
         return handled;
     }
 
-    function query_all(el: HTMLElement) {
-        return el.querySelectorAll(selector);
+    const process_tree = (el: HTMLElement): boolean => {
+        let handled = try_track(el);
+        for (let c of query_all(el)) {
+            is_html_element(c) && (handled = try_track(c) || handled);
+        }
+
+        return handled;
     }
 
-    function is_html_element(el: Node): el is HTMLElement {
-        return el instanceof HTMLElement;
-    }
-
-    function execute_task(timeout: number = 0) {
+    const execute_task = (timeout: number = 0) => {
         clearInterval(task_id);
 
         task_id = setTimeout(() => {
