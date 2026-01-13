@@ -1,5 +1,5 @@
 {
-  "name": "@ramstack/timeago.js",
+  "name": "@ramstack/timeago",
   "version": "1.0.0",
   "description": "@ramstack/timeago is a tiny utility that turns dates into live-updating relative time text like '3 minutes ago' or in '2 hours'.",
   "type": "module",

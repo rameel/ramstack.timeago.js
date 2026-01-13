@@ -24,7 +24,7 @@ npm install @ramstack/timeago
 
 ### Using CDN
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@ramstack/timeago@1/timeago.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ramstack/timeago@1/dist/timeago.min.js"></script>
 ```
 
 ## Quick start
