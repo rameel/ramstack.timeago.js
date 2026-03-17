@@ -7,5 +7,5 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{html,json,md}]
+[*.{html,json,md,yml}]
 indent_size = 2
